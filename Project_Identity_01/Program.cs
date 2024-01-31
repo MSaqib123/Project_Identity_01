@@ -1,4 +1,5 @@
 #region Configuartion,Middlware 
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Project_Identity_01.Data;
 using System.Runtime;
@@ -8,11 +9,20 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 //========================================
-//---------- 1. SetUp Identity ---------- 
+//-------- 1. SetUp DbConnection ---------
 //========================================
 builder.Services.AddDbContext<ApplicationDbContext>(o =>
     o.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
 );
+
+//========================================
+//-------- 2. SetUp Identity ---------
+//========================================
+//AddIdentityCore  do not give roles , cookies acces
+//AddIdentity is full access
+builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+    .AddEntityFrameworkStores<ApplicationDbContext>();
+
 
 var app = builder.Build();
 #endregion
@@ -21,7 +31,7 @@ var app = builder.Build();
 
 
 
-#region Piplines , Middlwares
+#region Request Piplines
 
 if (!app.Environment.IsDevelopment())
 {
@@ -35,6 +45,8 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+//_____ 1. Add Authentication ____
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
