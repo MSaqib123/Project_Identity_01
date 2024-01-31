@@ -90,21 +90,24 @@ namespace Project_Identity_01.Controllers
         //============ Login ==================
         //======================================
         #region Login
-        public IActionResult Login()
+        public IActionResult Login(string returnURL = null)
         {
             LoginVM vm = new LoginVM();
+            vm.ReturnURL = returnURL;
             return View(vm);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginVM vm)
         {
+            vm.ReturnURL = vm.ReturnURL ?? Url.Content("~/");
             if (ModelState.IsValid)
             {
                 var result = await _signInManager.PasswordSignInAsync(vm.Email, vm.Password, vm.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("Index", "Home");
+                    //return RedirectToAction("Index", "Home");
+                    return LocalRedirect(vm.ReturnURL);
                 }
                 else
                 {

@@ -2,7 +2,7 @@
 
 <div class="row col-md-10 offset-md-1">
     <h1 class="text-primary text-center">Regsiter</h1>
-    <form method="post" asp-controller="Account" asp-action="Login">
+    <form method="post" asp-controller="Account" asp-action="Login" asp-route-returnurl="@Model.ReturnURL">
         <div class="border p-3 px-5 rounded">
             <p class="text-center fw-bold">Login to account</p>
             <div asp-validation-summary="All" class="text-danger"></div>

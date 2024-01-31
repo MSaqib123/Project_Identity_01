@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Project_Identity_01.Models;
 using System.Diagnostics;
 
@@ -18,6 +19,8 @@ namespace Project_Identity_01.Controllers
             return View();
         }
 
+        //___ Error on URL ___
+        [Authorize]
         public IActionResult Privacy()
         {
             return View();

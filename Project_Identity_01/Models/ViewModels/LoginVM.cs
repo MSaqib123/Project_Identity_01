@@ -13,5 +13,7 @@ namespace Project_Identity_01.Models.ViewModels
         public string Password { get; set; }
         [Display(Name ="Remebers me?")]
         public bool RememberMe { get; set; }
+        //___ Return URL ____
+        public string ReturnURL { get; set; }
     }
 }
