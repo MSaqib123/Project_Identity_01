@@ -25,6 +25,7 @@ namespace Project_Identity_01.Controllers
             RegisterVM registerVm = new RegisterVM();
             return View(registerVm);
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterVM vm)
@@ -52,8 +53,25 @@ namespace Project_Identity_01.Controllers
                     await _signInManager.SignInAsync(user,isPersistent:false);
                     return RedirectToAction("Index","Home");
                 }
+                AddErrors(result);
             }
             return View(vm);
+        }
+
+        private void AddErrors(IdentityResult result)
+        {
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(string.Empty,error.Description);
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> LogOff()
+        {
+            await _signInManager.SignOutAsync();
+            return RedirectToAction("Index","Home");
         }
 
     }
