@@ -103,11 +103,16 @@ namespace Project_Identity_01.Controllers
             vm.ReturnURL = vm.ReturnURL ?? Url.Content("~/");
             if (ModelState.IsValid)
             {
-                var result = await _signInManager.PasswordSignInAsync(vm.Email, vm.Password, vm.RememberMe, lockoutOnFailure: false);
+                //var result = await _signInManager.PasswordSignInAsync(vm.Email, vm.Password, vm.RememberMe, lockoutOnFailure: false);
+                var result = await _signInManager.PasswordSignInAsync(vm.Email, vm.Password, vm.RememberMe, lockoutOnFailure: true);
                 if (result.Succeeded)
                 {
                     //return RedirectToAction("Index", "Home");
                     return LocalRedirect(vm.ReturnURL);
+                }
+                if (result.IsLockedOut)
+                {
+                    return RedirectToAction(nameof(Lockout));
                 }
                 else
                 {
@@ -116,6 +121,10 @@ namespace Project_Identity_01.Controllers
                 }
             }
             return View(vm);
+        }
+        public IActionResult Lockout()
+        {
+            return View();
         }
         #endregion
     }

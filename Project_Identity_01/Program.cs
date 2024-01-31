@@ -48,7 +48,16 @@ builder.Services.Configure<IdentityOptions>(opt =>
     //opt.Password.RequiredUniqueChars = 123; //like anything you want to get must
     #endregion
 
-    //_____ Password Setting ______
+    //_____ Lockout Setting ______
+    #region Lockout
+    opt.Lockout.MaxFailedAccessAttempts = 3;
+    opt.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(10);//FromHours(1);//FromDays(1);
+    #endregion
+
+    //_____ ConfirmEmail Setting ______
+    #region confirmEmail
+    opt.SignIn.RequireConfirmedEmail = false;
+    #endregion
 });
 
 
