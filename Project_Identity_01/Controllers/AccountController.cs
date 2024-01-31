@@ -20,6 +20,10 @@ namespace Project_Identity_01.Controllers
             _signInManager = signInManager;
         }
 
+        //======================================
+        //============ Register ================
+        //======================================
+        #region Register
         public IActionResult Register()
         {
             RegisterVM registerVm = new RegisterVM();
@@ -47,11 +51,11 @@ namespace Project_Identity_01.Controllers
                 //    Email = vm.Email
                 //};
 
-                var result =await _userManager.CreateAsync(user,vm.Password);
+                var result = await _userManager.CreateAsync(user, vm.Password);
                 if (result.Succeeded)
                 {
-                    await _signInManager.SignInAsync(user,isPersistent:false);
-                    return RedirectToAction("Index","Home");
+                    await _signInManager.SignInAsync(user, isPersistent: false);
+                    return RedirectToAction("Index", "Home");
                 }
                 AddErrors(result);
             }
@@ -62,17 +66,54 @@ namespace Project_Identity_01.Controllers
         {
             foreach (var error in result.Errors)
             {
-                ModelState.AddModelError(string.Empty,error.Description);
+                ModelState.AddModelError(string.Empty, error.Description);
             }
         }
 
+        #endregion
+
+        //======================================
+        //============ Logout ================
+        //======================================
+        #region Logout
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> LogOff()
         {
             await _signInManager.SignOutAsync();
-            return RedirectToAction("Index","Home");
+            return RedirectToAction("Index", "Home");
         }
 
+        #endregion
+
+        //======================================
+        //============ Login ==================
+        //======================================
+        #region Login
+        public IActionResult Login()
+        {
+            LoginVM vm = new LoginVM();
+            return View(vm);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Login(LoginVM vm)
+        {
+            if (ModelState.IsValid)
+            {
+                var result = await _signInManager.PasswordSignInAsync(vm.Email, vm.Password, vm.RememberMe, lockoutOnFailure: false);
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty,"Invlalid login attemp");
+                    return View(vm);
+                }
+            }
+            return View(vm);
+        }
+        #endregion
     }
 }
