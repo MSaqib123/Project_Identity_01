@@ -25,6 +25,33 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
 
+//========================================
+//--- 3. Configure Identity Options -------
+//========================================
+builder.Services.Configure<IdentityOptions>(opt =>
+{
+    //_____ Password Setting ______
+    #region Password
+    //1234
+    opt.Password.RequireDigit = false;
+
+    //abc
+    opt.Password.RequireLowercase = false;
+
+    //@,.&
+    opt.Password.RequireNonAlphanumeric = false;
+
+    //length 
+    //opt.Password.RequiredLength = 5;
+
+    //uniquechars  
+    //opt.Password.RequiredUniqueChars = 123; //like anything you want to get must
+    #endregion
+
+    //_____ Password Setting ______
+});
+
+
 var app = builder.Build();
 #endregion
 
