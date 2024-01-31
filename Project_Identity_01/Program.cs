@@ -1,11 +1,28 @@
-var builder = WebApplication.CreateBuilder(args);
+#region Configuartion,Middlware 
+using Microsoft.EntityFrameworkCore;
+using Project_Identity_01.Data;
+using System.Runtime;
 
+var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-var app = builder.Build();
+//========================================
+//---------- 1. SetUp Identity ---------- 
+//========================================
+builder.Services.AddDbContext<ApplicationDbContext>(o =>
+    o.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
+);
 
-// Configure the HTTP request pipeline.
+var app = builder.Build();
+#endregion
+
+
+
+
+
+#region Piplines , Middlwares
+
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
@@ -25,3 +42,5 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
+
+#endregion
