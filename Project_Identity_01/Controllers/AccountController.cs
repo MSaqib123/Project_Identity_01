@@ -10,11 +10,11 @@ namespace Project_Identity_01.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
         public AccountController(
-            UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager)
+            UserManager<ApplicationUser> userManager,
+            SignInManager<ApplicationUser> signInManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -32,19 +32,19 @@ namespace Project_Identity_01.Controllers
             if (ModelState.IsValid)
             {
                 //__________ Applicaiton User ___________
-                //var user = new ApplicationUser
-                //{
-                //    UserName = vm.Email, //bh 
-                //    Email = vm.Email,
-                //    Name = vm.Name
-                //};
-
-                //__________ Identity User ___________
-                var user = new IdentityUser
+                var user = new ApplicationUser
                 {
                     UserName = vm.Email, //bh 
-                    Email = vm.Email
+                    Email = vm.Email,
+                    Name = vm.Name
                 };
+
+                //__________ Identity User ___________
+                //var user = new IdentityUser
+                //{
+                //    UserName = vm.Email, //bh 
+                //    Email = vm.Email
+                //};
 
                 var result =await _userManager.CreateAsync(user,vm.Password);
                 if (result.Succeeded)

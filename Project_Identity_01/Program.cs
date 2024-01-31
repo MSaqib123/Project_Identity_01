@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Project_Identity_01.Data;
+using Project_Identity_01.Models;
 using System.Runtime;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,7 +21,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(o =>
 //========================================
 //AddIdentityCore  do not give roles , cookies acces
 //AddIdentity is full access
-builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
 
