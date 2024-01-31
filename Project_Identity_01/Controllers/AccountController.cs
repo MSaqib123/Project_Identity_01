@@ -31,12 +31,21 @@ namespace Project_Identity_01.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser
+                //__________ Applicaiton User ___________
+                //var user = new ApplicationUser
+                //{
+                //    UserName = vm.Email, //bh 
+                //    Email = vm.Email,
+                //    Name = vm.Name
+                //};
+
+                //__________ Identity User ___________
+                var user = new IdentityUser
                 {
                     UserName = vm.Email, //bh 
-                    Email = vm.Email,
-                    Name = vm.Name
+                    Email = vm.Email
                 };
+
                 var result =await _userManager.CreateAsync(user,vm.Password);
                 if (result.Succeeded)
                 {
